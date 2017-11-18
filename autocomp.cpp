@@ -11,6 +11,7 @@
 #define COMPILER "g++ "
 #define DEFAULT_OUTPUT_FILE_NAME "compiled"
 #define COMPILER_OUTPUT_ARG " -o "
+#define MAX_UPDATE_RESET_VARIABLE 262144 // 1024 ^ 2 / 4
 
 using namespace std;
 
@@ -23,26 +24,35 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	char const * comp_cmd;
+	const char * comp_cmd;
+	string cs(argv[1]);
+	string cmd = COMPILER + cs + COMPILER_OUTPUT_ARG + DEFAULT_OUTPUT_FILE_NAME;
+	if (cmd.find(";") != std::string::npos || cmd.find("?") != std::string::npos ||
+			cmd.find("&") != std::string::npos || cmd.find("#") != std::string::npos ||
+			cmd.find("%") != std::string::npos || cmd.find("\\") != std::string::npos ||
+			cmd.find("'") != std::string::npos || cmd.find("$") != std::string::npos ||
+			cmd.find("(") != std::string::npos || cmd.find(")") != std::string::npos ||
+			cmd.find("|") != std::string::npos)
 	{
-		string cs(argv[1]);
-		string cmd = COMPILER + cs + COMPILER_OUTPUT_ARG + DEFAULT_OUTPUT_FILE_NAME;
-		if (cmd.find(";") != std::string::npos || cmd.find("?") != std::string::npos || cmd.find("&") != std::string::npos) {
-			cout << "Names Cannot contain any of the following: \";?&\"" << endl;
-		}
-		comp_cmd = cmd.c_str();
+		cout << "Names cannot contain any of the following: \";?&#\\%'$()|\"" << endl;
+		exit(0);
 	}
+
+	comp_cmd = cmd.c_str();
 
 	cout << "COMMAND : " << comp_cmd << endl;
 	unsigned int update = 0;
+	sleep((unsigned int)2);
+
 	while (true) {
 		system("clear");
-		cout << "Update: " << update << endl;
+		cout << "Update: " << update << endl << "____________________" << endl << endl;
 
 		system((const char*)comp_cmd);
-		sleep((unsigned int)DELAY_TIME);
-		//sleep((unsigned int)DELAY_TIME_BATTERY); // <--- battery mode
+		sleep((unsigned int)DELAY_TIME);//            <--- [Normal mode]
+		//sleep((unsigned int)DELAY_TIME_BATTERY); // <--- [battery mode]
 		update++;
+		if (update == MAX_UPDATE_RESET_VARIABLE)
+			update = 0;
 	}
-
 }
