@@ -22,24 +22,21 @@ int main(int argc, char *argv[])
 	}
 
 	const char * comp_cmd;
-	string cs(argv[1]);
-	string cmd = COMPILER + cs + COMPILER_OUTPUT_ARG + DEFAULT_OUTPUT_FILE_NAME;
+	string cmd(argv[1]);
 	if (cmd.find(";") != std::string::npos || cmd.find("?") != std::string::npos ||
-			cmd.find("&") != std::string::npos || cmd.find("#") != std::string::npos ||
-			cmd.find("%") != std::string::npos || cmd.find("\\") != std::string::npos ||
-			cmd.find("'") != std::string::npos || cmd.find("$") != std::string::npos ||
-			cmd.find("(") != std::string::npos || cmd.find(")") != std::string::npos ||
-			cmd.find("|") != std::string::npos)
+	cmd.find("&") != std::string::npos || cmd.find("#") != std::string::npos ||
+	cmd.find("%") != std::string::npos || cmd.find("\\") != std::string::npos ||
+	cmd.find("'") != std::string::npos || cmd.find("$") != std::string::npos ||
+	cmd.find("(") != std::string::npos || cmd.find(")") != std::string::npos ||
+	cmd.find("|") != std::string::npos)
 	{
-		cout << "Names cannot contain any of the following: \";?&#\\%'$()|\"" << endl;
+		cout << "Names cannot contain any of the following: ;?&#\\%'$()|" << endl;
 		exit(0);
 	}
+	string cs = COMPILER + cmd + COMPILER_OUTPUT_ARG + DEFAULT_OUTPUT_FILE_NAME;
+	comp_cmd = cs.c_str();
 
-	comp_cmd = cmd.c_str();
-
-	cout << "COMMAND : " << comp_cmd << endl;
-	unsigned int update = 0;
-	sleep((unsigned int)2);
+	int update = 0;
 
 	while (true) {
 		system("clear");
@@ -49,7 +46,7 @@ int main(int argc, char *argv[])
 		sleep((unsigned int)DELAY_TIME);//            <--- [Normal mode]
 		//sleep((unsigned int)DELAY_TIME_BATTERY); // <--- [battery mode]
 		update++;
-		if (update == (unsigned int)MAX_UPDATE_RESET_VARIABLE)
+		if (update == (int)MAX_UPDATE_RESET_VARIABLE)
 			update = 0;
 	}
 }
