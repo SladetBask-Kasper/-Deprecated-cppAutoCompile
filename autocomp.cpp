@@ -1,10 +1,7 @@
 #include <iostream>
-#include <string>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sstream>
-#include <stdio.h>
-// #include <string.h>
 
 #define DELAY_TIME 5
 #define DELAY_TIME_BATTERY 10
@@ -52,7 +49,7 @@ int main(int argc, char *argv[])
 		sleep((unsigned int)DELAY_TIME);//            <--- [Normal mode]
 		//sleep((unsigned int)DELAY_TIME_BATTERY); // <--- [battery mode]
 		update++;
-		if (update == MAX_UPDATE_RESET_VARIABLE)
+		if (update == (unsigned int)MAX_UPDATE_RESET_VARIABLE)
 			update = 0;
 	}
 }
